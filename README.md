@@ -75,6 +75,7 @@ Genre dominates the score by design: the system should stay "on topic" and rarel
    python -m venv .venv
    source .venv/bin/activate      # Mac or Linux
    .venv\Scripts\activate         # Windows
+   ```
 
 2. Install dependencies
 
