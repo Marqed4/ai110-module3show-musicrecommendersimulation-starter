@@ -1,0 +1,165 @@
+Step 1: Explore Real Recommendation Systems
+
+Go to the Music Recommender Simulation repo.
+Click Fork to create your own copy under your GitHub account.
+Clone the fork to your computer, then open the cloned folder in VS Code.
+Use your AI coding assistant's chat to research and summarize how major streaming platforms (like Spotify or YouTube) predict what users will love next. Structure your prompt to specifically ask for the difference between collaborative filtering (using other users' behavior) and content-based filtering (using song attributes).
+Identify the main data types involved in these systems, such as likes, skips, playlists, tempo, or mood.
+Step 2: Identify Key Features
+
+Examine the data/songs.csv file to see the available attributes for your simulator, such as genre, mood, energy, and tempo_bpm.
+Attach songs.csv and ask your AI coding assistant to analyze the available data and suggest which features would be most effective for a simple content-based recommender. Evaluate if the suggested features (e.g., energy, valence) align with your personal experience of how a musical "vibe" is defined.
+Step 3: Mapping the Logic
+
+
+Determine your "Algorithm Recipe"-the set of rules your system will use to score songs.
+
+
+Formulate a prompt to help you design a math-based "Scoring Rule" for your recommender. Ask your AI coding assistant how to calculate a score for a numerical feature (like energy) that rewards songs that are closer to the user's preference, rather than just having higher or lower values.
+
+Think about the weights. Should a matching genre be worth more points than a matching mood?
+
+Ask your AI coding assistant to explain why we need both a "Scoring Rule" (for one song) and a "Ranking Rule" (for a list of songs) to build a recommendation system.
+
+Step 4: Summarize Your Concept
+
+Open README.md.
+In the How The System Works section, write a short paragraph explaining your understanding of how real-world recommendations work and what your version will prioritize.
+List the specific features your Song and UserProfile objects will use in your simulation.
+
+Step 1: Define Your Data
+
+Open the data/songs.csv file in your project. This is your initial catalog of 10 songs.
+Review the features for each song, such as genre, mood, and energy (on a 0.0-1.0 scale).
+Use your AI coding assistant's chat to help expand this dataset. Formulate a prompt that asks the AI to generate 5-10 additional songs in a valid CSV format that includes the existing headers. Ensure the new songs represent a diverse range of genres and moods not already present in the starter file.
+You can also ask your AI coding assistant to suggest new numerical features, like "Danceability" or "Acousticness," to add more depth to your simulation.
+Step 2: Create a User Profile
+
+Define a specific "taste profile" that your recommender will use for its comparisons.
+This profile should be a dictionary containing target values for the features you identified in Step 1 (e.g., favorite_genre, favorite_mood, target_energy).
+Use your AI coding assistant's chat to get a critique of your proposed user profile. Structure your prompt to ask if these specific preferences will allow the system to differentiate between "intense rock" and "chill lofi," or if the profile is too narrow.
+Step 3: Sketch the Recommendation Logic
+
+Describe your "algorithm recipe"-the specific rules your program will use to decide which songs to recommend.
+Open a new chat session for "Scoring Logic Design." Attach songs.csv and ask your AI coding assistant for point-weighting strategies. Your prompt should seek a balance: for example, how much should a "Mood" match count compared to a "Genre" match?
+Finalize your recipe. A common starting point is:
++2.0 points for a genre match.
++1.0 point for a mood match.
+Similarity points based on how close the song's energy is to the user's target.
+Step 4: Visualize the Design
+
+
+Sketch a quick map of the data flow to plan your logic: Input (User Prefs) -> Process (The Loop: Judging every individual song in the CSV using your scoring logic) -> Output (The Ranking: Top K Recommendations).
+
+This is just a planning aid for you - it isn't graded, so use whatever format is fastest: a napkin sketch, a Mermaid flowchart, a whiteboard photo, or a few lines of text. The goal is to make sure you understand how a single song moves from the CSV to a ranked list before you start coding.
+Step 5: Document Your Plan
+
+Open README.md.
+Instead of using separate files, document your plan in the How The System Works section.
+Include your finalized "Algorithm Recipe" and a brief note on any potential biases you expect (e.g., "This system might over-prioritize genre, ignoring great songs that match the user's mood").
+
+Step 1: Set Up Your Project Files
+
+
+Open src/recommender.py. This is where your core logic will live.
+
+
+Use agent mode or your AI coding assistant's chat to implement the load_songs function. Your prompt should instruct the AI to use Python's csv module to read data/songs.csv and return a list of dictionaries.
+
+Make sure your prompt specifies that numerical values (like energy or tempo_bpm) must be converted to floats or integers so you can do math with them later.
+
+Verify your progress by running the main() function in src/main.py. It should print out "Loaded songs: 10" (or however many you have in your CSV).
+
+Step 2: Implement the Scoring Function
+
+
+In src/recommender.py, find the score_song(user_prefs, song) function.
+
+
+Highlight the function and use your AI coding assistant's chat. Formulate a prompt based on your "Algorithm Recipe" from Phase 2. Tell the AI how many points to award for a genre match, a mood match, and how to calculate a score for numerical features like energy.
+
+To earn full credit on the rubric, ensure your scoring logic returns both a numeric score and a list of "reasons" (e.g., "genre match (+2.0)") so the user understands the recommendation
+Step 3: Build the Recommender Function
+
+
+In src/recommender.py, find the recommend_songs(user_prefs, songs, k) function.
+
+Recommending is simply the act of ranking. To find the "best" songs, this function must use your score_song function as a "judge" for every single in the catalog. Once every song has a numeric score, you can then sort the entire list to find the top results.
+
+Attach recommender.py and use your AI coding assistant's chat. Ask for the most "Pythonic" way to loop through all songs, calculate their scores using your new function, and return the top k results sorted from highest to lowest score.
+
+Ask the AI to explain the difference between using .sort() and sorted() so you understand how your data is being handled.
+Step 4: CLI Verification
+
+Open src/main.py.
+Use your AI coding assistant's chat to format the output of your recommendations. Ask for a clean, readable layout in the terminal that displays the song title, the final score, and the specific "reasons" generated by your scoring function.
+Run the script: python -m src.main. Verify that the top results match what you would expect for the default "pop/happy" profile.
+In your README.md, add a section called Sample Recommendation Output and paste the terminal output showing the recommendations (song titles, scores, and reasons) into a fenced code block (not a screenshot).
+Step 5: Document and Commit
+
+Use your AI coding assistant to add 1-line docstrings to your new functions in recommender.py.
+Ask your AI coding assistant to generate a commit message to summarize your implementation. Make sure your message mentions that you have a working "CLI-first" simulation.
+Push your changes: git push origin main.
+
+Step 1: Stress Test with Diverse Profiles
+
+Open src/main.py.
+Define at least three distinct user preference dictionaries (e.g., "High-Energy Pop," "Chill Lofi," "Deep Intense Rock").
+Open a new chat session for "System Evaluation." Reference or attach the relevant files and ask your AI coding assistant to suggest "adversarial" or "edge case" user profiles-profiles designed to see if your scoring logic can be "tricked" or if it produces unexpected results (e.g., a user with conflicting preferences like energy: 0.9 and mood: sad).
+Run your recommender for each profile and observe the top 5 results in your terminal.
+Paste the terminal output for each profile's recommendations as fenced code blocks in your README.md or model_card.md (not screenshots).
+Step 2: Look for Accuracy and Surprises
+
+
+Compare the recommendations for at least one profile to your own musical intuition. Do the results "feel" right?
+
+
+Use your AI coding assistant's chat on a specific result in your terminal (or the corresponding code in main.py). Formulate a prompt asking your AI coding assistant to explain why a specific song ranked first based on your current weights in recommender.py.
+
+If the same song keeps appearing at the top of every list, your "Genre" weight might be too strong, or your dataset might be too small to provide variety.
+Step 3: Run a Small Data Experiment
+
+Choose one change to test your system's sensitivity:
+Weight Shift: Double the importance of energy and half the importance of genre.
+Feature Removal: Temporarily comment out the mood check to see how the rankings change.
+Use your AI coding assistant to quickly apply one of these experimental changes across recommender.py. In your prompt, describe the specific logic change you want to see and ask it to verify that the math remains valid.
+Run your main.py again. Note whether the change made the recommendations more accurate or just different.
+Step 4: Identify Bias and Limitations
+
+Attach recommender.py and songs.csv and ask your AI coding assistant to identify potential "filter bubbles" or biases in your current scoring logic. For example, does your system ignore certain types of users because of how you calculate the "energy gap"?
+Open model_card.md.
+In the Limitations and Bias section, write 3-5 sentences describing one weakness you discovered during your experiments (e.g., "The system over-prioritizes pop because 60% of the dataset is pop music").
+Step 5: Document Your Evaluation
+
+
+Update the Evaluation section of your model_card.md.
+
+
+Describe which user profiles you tested and what surprised you about the results.
+
+
+For each pair of profiles, write at least one comment in your model_card.md file comparing the differences between their outputs - what changed, and why does it make sense? For example: "EDM profile prefers high energy songs; acoustic profile shifts toward low energy guitars." This helps demonstrate that you understand what your user preferences are actually testing for and whether the output is valid.
+
+Use plain language. Imagine you are explaining to a non-programmer why the "Gym Hero" song keeps showing up for people who just want "Happy Pop."
+
+Step 1: Fill Out the Model Card Template
+
+Complete each section of the model_card.md file in your project repo. Use short, simple sentences! This is meant to be clear, not formal.
+Model Card Sections
+Model Name: Choose something fun but descriptive (e.g., "VibeFinder 1.0").
+Goal / Task: Explain what your recommender tries to predict or suggest.
+Data Used: Describe your dataset size, features, and any limits.
+Algorithm Summary: Explain your scoring rules in plain language (not code).
+Observed Behavior / Biases: Describe at least one pattern, limitation, or imbalance.
+Evaluation Process: Summarize how you tested your system (profiles, experiments, comparisons).
+Intended Use and Non-Intended Use: Clarify what your system is designed for and what it shouldn't be used for.
+Ideas for Improvement: List 2-3 things you'd change if you kept developing this.
+Step 2: Write a Personal Reflection
+
+In the final section of your Model Card (or the README.md), write a personal reflection on your engineering process.
+What was your biggest learning moment during this project?
+How did using AI tools help you, and when did you need to double-check them?
+What surprised you about how simple algorithms can still "feel" like recommendations?
+What would you try next if you extended this project?
+
+Make sure all of these bullets are met and then create .txt with this prompt is included in the documents.
