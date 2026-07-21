@@ -1,5 +1,5 @@
-from typing import List, Dict, Tuple, Optional
-from dataclasses import dataclass
+from typing import List, Dict, Tuple
+from dataclasses import dataclass, asdict
 
 @dataclass
 class Song:
@@ -29,6 +29,15 @@ class UserProfile:
     target_energy: float
     likes_acoustic: bool
 
+def _user_prefs(user: UserProfile) -> Dict:
+    """Adapts a UserProfile into the dict shape score_song expects."""
+    return {
+        "genre": user.favorite_genre,
+        "mood": user.favorite_mood,
+        "energy": user.target_energy,
+        "likes_acoustic": user.likes_acoustic,
+    }
+
 class Recommender:
     """
     OOP implementation of the recommendation logic.
@@ -38,12 +47,15 @@ class Recommender:
         self.songs = songs
 
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
-        # TODO: Implement recommendation logic
-        return self.songs[:k]
+        """Ranks self.songs against user via score_song and returns the top k."""
+        scored = [(song, score_song(_user_prefs(user), asdict(song))[0]) for song in self.songs]
+        scored.sort(key=lambda pair: pair[1], reverse=True)
+        return [song for song, _ in scored[:k]]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
-        # TODO: Implement explanation logic
-        return "Explanation placeholder"
+        """Returns the itemized score_song reasons for why song fits user."""
+        _, reasons = score_song(_user_prefs(user), asdict(song))
+        return "; ".join(reasons) if reasons else "General match based on your profile"
 
 def load_songs(csv_path: str) -> List[Dict]:
     """
