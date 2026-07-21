@@ -41,6 +41,15 @@ def main() -> None:
         "EDM Raver": {"genre": "house", "mood": "energetic", "energy": 0.9, "likes_acoustic": False},
         "Lofi Chill Studier": {"genre": "lofi", "mood": "chill", "energy": 0.35, "likes_acoustic": True},
         "Hip-Hop Head": {"genre": "hip-hop", "mood": "nostalgic", "energy": 0.6, "likes_acoustic": False},
+        # Adversarial: conflicting signals - high energy but a sad mood, and no
+        # stated acoustic preference, to see how the scorer resolves the tension.
+        "Adversarial: Hyped But Sad": {"genre": "pop", "mood": "sad", "energy": 0.95, "likes_acoustic": None},
+        # Adversarial: genre with zero catalog coverage, to see whether the
+        # mismatch penalty/energy-exception logic degrades gracefully.
+        "Adversarial: Unrepresented Genre": {"genre": "classical", "mood": "chill", "energy": 0.4, "likes_acoustic": True},
+        # Adversarial: extreme energy at both ends of the scale with a neutral mood,
+        # to check whether energy closeness alone can override genre weighting.
+        "Adversarial: Max Energy Extreme": {"genre": "lofi", "mood": "chill", "energy": 1.0, "likes_acoustic": False},
     }
 
     for persona, user_prefs in user_profiles.items():

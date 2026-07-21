@@ -11,7 +11,7 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+This version loads an 18-song catalog from `data/songs.csv`, scores every song against a user's stated genre, mood, target energy, and acoustic preference with a weighted point rule, and returns the top 5 highest-scoring songs with an itemized explanation of why each one ranked where it did. See "Sample Recommendation Output" below for real runs across 5 personas plus 3 adversarial edge cases, and `model_card.md` for a full write-up of strengths, biases, and evaluation.
 
 ---
 
@@ -102,7 +102,7 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Output of `python -m src.main`, run against the full `data/songs.csv` catalog for the default profile plus a few deliberately varied personas:
+Output of `python -m src.main`, run against the full `data/songs.csv` catalog (18 songs) for 5 baseline personas plus 3 adversarial edge-case profiles designed to try to "trick" the scorer:
 
 ```
 Loaded songs: 18
@@ -164,9 +164,189 @@ Profile: genre=rock, mood=nostalgic, energy=0.55, likes_acoustic=True
      - genre mismatch (lofi) (-1.0)
      - energy closeness (+0.87)
      - acoustic preference match (+0.5)
+
+============================================================
+Recommendations for: EDM Raver
+Profile: genre=house, mood=energetic, energy=0.9, likes_acoustic=False
+============================================================
+1. They Don't Know - Disciples  (Score: 4.45)
+     - genre match (house) (+2.0)
+     - mood match (energetic) (+1.0)
+     - energy closeness (+0.95)
+     - acoustic preference match (+0.5)
+
+2. Sunset Highway - Voltline  (Score: 2.97)
+     - outside your usual house genre, but energy is nearly identical (+0.5)
+     - mood match (energetic) (+1.0)
+     - energy closeness (+0.97)
+     - acoustic preference match (+0.5)
+
+3. Storm Runner - Voltline  (Score: 1.99)
+     - outside your usual house genre, but energy is nearly identical (+0.5)
+     - energy closeness (+0.99)
+     - acoustic preference match (+0.5)
+
+4. IYKTYK - Eem Triplin  (Score: 1.98)
+     - outside your usual house genre, but energy is nearly identical (+0.5)
+     - energy closeness (+0.98)
+     - acoustic preference match (+0.5)
+
+5. Gym Hero - Max Pulse  (Score: 1.97)
+     - outside your usual house genre, but energy is nearly identical (+0.5)
+     - energy closeness (+0.97)
+     - acoustic preference match (+0.5)
+
+============================================================
+Recommendations for: Lofi Chill Studier
+Profile: genre=lofi, mood=chill, energy=0.35, likes_acoustic=True
+============================================================
+1. Library Rain - Paper Lanterns  (Score: 4.50)
+     - genre match (lofi) (+2.0)
+     - mood match (chill) (+1.0)
+     - energy closeness (+1.00)
+     - acoustic preference match (+0.5)
+
+2. Midnight Coding - LoRoom  (Score: 4.43)
+     - genre match (lofi) (+2.0)
+     - mood match (chill) (+1.0)
+     - energy closeness (+0.93)
+     - acoustic preference match (+0.5)
+
+3. Focus Flow - LoRoom  (Score: 3.45)
+     - genre match (lofi) (+2.0)
+     - energy closeness (+0.95)
+     - acoustic preference match (+0.5)
+
+4. Quiet Library - Paper Lanterns  (Score: 3.45)
+     - genre match (lofi) (+2.0)
+     - energy closeness (+0.95)
+     - acoustic preference match (+0.5)
+
+5. Coffee Shop Stories - Slow Stereo  (Score: 1.98)
+     - outside your usual lofi genre, but energy is nearly identical (+0.5)
+     - energy closeness (+0.98)
+     - acoustic preference match (+0.5)
+
+============================================================
+Recommendations for: Hip-Hop Head
+Profile: genre=hip-hop, mood=nostalgic, energy=0.6, likes_acoustic=False
+============================================================
+1. I Wish - Casper Mcfadden & Manapool  (Score: 2.95)
+     - outside your usual hip-hop genre, but energy is nearly identical (+0.5)
+     - mood match (nostalgic) (+1.0)
+     - energy closeness (+0.95)
+     - acoustic preference match (+0.5)
+
+2. Char - Crystal Castles  (Score: 0.40)
+     - genre mismatch (electronic) (-1.0)
+     - energy closeness (+0.90)
+     - acoustic preference match (+0.5)
+
+3. Night Drive Loop - Neon Echo  (Score: 0.35)
+     - genre mismatch (synthwave) (-1.0)
+     - energy closeness (+0.85)
+     - acoustic preference match (+0.5)
+
+4. Rooftop Lights - Indigo Parade  (Score: 0.34)
+     - genre mismatch (indie pop) (-1.0)
+     - energy closeness (+0.84)
+     - acoustic preference match (+0.5)
+
+5. Forget - DJ Yilaguan  (Score: 0.30)
+     - genre mismatch (dance) (-1.0)
+     - energy closeness (+0.80)
+     - acoustic preference match (+0.5)
+
+============================================================
+Recommendations for: Adversarial: Hyped But Sad
+Profile: genre=pop, mood=sad, energy=0.95, likes_acoustic=None
+============================================================
+1. Gym Hero - Max Pulse  (Score: 2.98)
+     - genre match (pop) (+2.0)
+     - energy closeness (+0.98)
+
+2. Sunrise City - Neon Echo  (Score: 2.87)
+     - genre match (pop) (+2.0)
+     - energy closeness (+0.87)
+
+3. Storm Runner - Voltline  (Score: 1.46)
+     - outside your usual pop genre, but energy is nearly identical (+0.5)
+     - energy closeness (+0.96)
+
+4. IYKTYK - Eem Triplin  (Score: -0.07)
+     - genre mismatch (hyperpop) (-1.0)
+     - energy closeness (+0.93)
+
+5. Sunset Highway - Voltline  (Score: -0.08)
+     - genre mismatch (rock) (-1.0)
+     - energy closeness (+0.92)
+
+============================================================
+Recommendations for: Adversarial: Unrepresented Genre
+Profile: genre=classical, mood=chill, energy=0.4, likes_acoustic=True
+============================================================
+1. Midnight Coding - LoRoom  (Score: 2.98)
+     - outside your usual classical genre, but energy is nearly identical (+0.5)
+     - mood match (chill) (+1.0)
+     - energy closeness (+0.98)
+     - acoustic preference match (+0.5)
+
+2. Focus Flow - LoRoom  (Score: 2.00)
+     - outside your usual classical genre, but energy is nearly identical (+0.5)
+     - energy closeness (+1.00)
+     - acoustic preference match (+0.5)
+
+3. Coffee Shop Stories - Slow Stereo  (Score: 1.97)
+     - outside your usual classical genre, but energy is nearly identical (+0.5)
+     - energy closeness (+0.97)
+     - acoustic preference match (+0.5)
+
+4. Dark Doom Honey - Kyoto  (Score: 1.95)
+     - outside your usual classical genre, but energy is nearly identical (+0.5)
+     - energy closeness (+0.95)
+     - acoustic preference match (+0.5)
+
+5. Library Rain - Paper Lanterns  (Score: 1.45)
+     - genre mismatch (lofi) (-1.0)
+     - mood match (chill) (+1.0)
+     - energy closeness (+0.95)
+     - acoustic preference match (+0.5)
+
+============================================================
+Recommendations for: Adversarial: Max Energy Extreme
+Profile: genre=lofi, mood=chill, energy=1.0, likes_acoustic=False
+============================================================
+1. Midnight Coding - LoRoom  (Score: 3.42)
+     - genre match (lofi) (+2.0)
+     - mood match (chill) (+1.0)
+     - energy closeness (+0.42)
+
+2. Library Rain - Paper Lanterns  (Score: 3.35)
+     - genre match (lofi) (+2.0)
+     - mood match (chill) (+1.0)
+     - energy closeness (+0.35)
+
+3. Focus Flow - LoRoom  (Score: 2.40)
+     - genre match (lofi) (+2.0)
+     - energy closeness (+0.40)
+
+4. Quiet Library - Paper Lanterns  (Score: 2.30)
+     - genre match (lofi) (+2.0)
+     - energy closeness (+0.30)
+
+5. Gym Hero - Max Pulse  (Score: 0.43)
+     - genre mismatch (pop) (-1.0)
+     - energy closeness (+0.93)
+     - acoustic preference match (+0.5)
 ```
 
 The default `pop`/`happy` profile ranks "Sunrise City" (pop, happy, energy 0.82) first, exactly as expected, since it's the closest genre, mood, and energy match in the catalog.
+
+The three adversarial profiles were chosen to probe specific weak points in the scoring rule:
+
+- **"Hyped But Sad"** sets `mood: sad` with `energy: 0.95`, a combination that almost never co-occurs in real music (few songs are simultaneously that energetic and that sad). No mood match is possible in the catalog at that energy level, so the top results are pure genre + energy plays with no mood bonus. This confirms the mood signal fails silently (contributes 0, no error) rather than distorting the ranking when it can't be satisfied.
+- **"Unrepresented Genre"** asks for `genre: classical`, which does not exist anywhere in `songs.csv`. Since every song mismatches, the ranking collapses entirely to the "close energy" exception path (+0.5) plus mood/energy/acoustic - the system quietly falls back to "closest vibe" instead of failing or returning nothing, which is reasonable but means a user with a genuinely unsupported taste gets recommendations that look confident despite zero genre relevance.
+- **"Max Energy Extreme"** sets `energy: 1.0`, the highest possible value. Because `ENERGY_MAX_POINTS` scales linearly with `1 - |diff|`, this profile is well-behaved (no boundary bugs at the extreme), but it does surface that a genre-mismatched, low-energy song can still outrank nothing else in a thin catalog - here the mismatch penalty is large enough that "Gym Hero" still lands 5th place with a low score.
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 
@@ -174,38 +354,29 @@ The default `pop`/`happy` profile ranks "Sunrise City" (pop, happy, energy 0.82)
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+**Weight shift: doubled energy, halved genre.** As a sensitivity test, `ENERGY_MAX_POINTS` was temporarily changed from `1.0` to `2.0` and `GENRE_MATCH_POINTS` from `2.0` to `1.0` (energy up to 2x its normal weight, genre down to half), then `python -m src.main` was re-run across all 8 profiles.
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+Result: the change made recommendations **different, not more accurate**. The clearest case is "Soft Rock Nostalgic" (`genre=rock, mood=nostalgic, energy=0.55`). With the original weights, the #1 result is "Sunset Highway" (an actual rock song). With energy doubled and genre halved, the #1 result flips to "I Wish," a song that is **not rock at all** - it wins purely because its energy is nearly identical to the target and it happens to match mood, while the genre penalty is no longer strong enough to keep off-genre songs out of first place. The same pattern showed up in the "Default (Pop / Happy)" profile, where an off-genre song ("Rooftop Lights") jumped ahead of an actual pop song ("Gym Hero") in the ranking.
+
+This confirms the original design intent described in the Algorithm Recipe above: genre needs to dominate the score, or the recommender stops feeling "on-topic" and starts recommending songs from the wrong genre just because their energy happens to line up. The weight shift was reverted after the experiment; the shipped `recommender.py` keeps the original weights.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+- It only works on a tiny, 18-song catalog with 1-2 songs per genre, so "top 5" is often just "every song sharing your genre" rather than a real ranking among alternatives.
+- It has no concept of a genre it doesn't recognize: a user asking for an unsupported genre (e.g. `classical`) still gets a confident-looking top 5, with no signal that the system has zero real matches for them.
+- It does not understand lyrics, audio, or language; it only compares labeled metadata (genre, mood, energy, acousticness) to a stated preference.
+- It over-favors genre by design, which keeps recommendations "on-topic" but means a user's mood or acoustic preference can be silently overridden or ignored if genre and energy already line up.
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+See `model_card.md` for the full write-up of these limitations, including the adversarial profiles and weight-shift experiment that surfaced them.
 
 ---
 
 ## Reflection
 
-Read and complete `model_card.md`:
-
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
-
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
-
+This project made it concrete how a recommender turns a handful of stated preferences into predictions: it is not "understanding" taste at all, just checking a few labeled attributes (genre, mood, energy, acousticness) against a song and adding up points. That mechanical simplicity is also where bias shows up. Genre dominates the score by design, so a user whose favorite genre has thin or zero catalog coverage (tested with the "Hip-Hop Head" and "Unrepresented Genre" profiles) still gets a confident top 5, built entirely from the "close energy" fallback rather than any real genre match. The full evaluation, biases, and personal reflection are documented in `model_card.md`.
 
 
