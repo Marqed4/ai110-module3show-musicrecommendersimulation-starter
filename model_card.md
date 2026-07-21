@@ -13,6 +13,12 @@ VibeFinder takes a short list of stated taste preferences (favorite genre, favor
 - It assumes the user can name their own genre, mood, energy, and acoustic preference up front. It does not learn from listening history or skips.
 - It is built for classroom exploration of how a simple, transparent scoring rule turns stated preferences into a ranked list, not for real-world deployment. The catalog is only 18 songs, far too small to serve real listeners.
 
+**Not intended for:**
+
+- Any real product or paying users. The catalog is a toy dataset, not licensed music, and the scoring has no notion of catalog coverage or confidence (see Limitations).
+- Any use where a "wrong" recommendation matters, such as therapeutic, medical, or emotional-support contexts that lean on the `mood` field. The system has no idea what a mood label actually feels like to a listener.
+- Making inferences about a user's identity, demographics, or mental state from their stated preferences. The inputs are simple taste labels, not psychological signals, and treating them as such would be a misuse of what this system actually models.
+
 ---
 
 ## 3. How the Model Works
