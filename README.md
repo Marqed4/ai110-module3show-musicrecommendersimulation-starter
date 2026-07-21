@@ -109,6 +109,18 @@ pytest
 
 You can add more tests in `tests/test_recommender.py`.
 
+### Bonus: Audio Playback (Experimental)
+
+`src/play.py` is a small, separate module that "plays" a song through the system's real audio output via PyAudio (it synthesizes a short tone in memory, since the simulation has no actual audio files) and records each play in `data/plays.json` per user. `play_score()` turns a user's raw play count into a 0-1 familiarity score, capped so a heavily-replayed song doesn't dominate.
+
+This is exploratory and **not currently wired into `score_song`/`recommend_songs`**: play counts are tracked but don't affect any recommendation yet. It's a plausible next step toward a hybrid recommender (blending this project's content-based scoring with a lightweight collaborative signal), left here as a foundation rather than a finished feature. To try it directly:
+
+```python
+from src.play import load_song_request, play_song
+
+play_song(load_song_request(song_id=1))
+```
+
 ---
 
 ## Sample Recommendation Output
