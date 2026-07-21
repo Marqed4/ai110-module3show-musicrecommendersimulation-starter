@@ -52,7 +52,7 @@ Genre is weighted the heaviest on purpose, so recommendations stay "on-topic" fo
 - **Users whose stated genre is well represented** (pop, rock, lofi, house) get results that clearly match their intuition: the top pick is consistently a same-genre, same-mood, close-energy song.
 - The energy-closeness scoring behaves smoothly and predictably across the whole 0-1 range, including at the extremes (tested at `energy=1.0`), with no boundary bugs.
 - The genre-mismatch "close energy" exception is a nice touch: a song from a different genre can still surface if its vibe (energy) lines up almost exactly, instead of being flatly excluded.
-- Every recommendation comes with a itemized, human-readable explanation of exactly why it scored the way it did, which makes the system easy to audit and debug.
+- Every recommendation comes with an itemized, human-readable explanation of exactly why it scored the way it did, which makes the system easy to audit and debug.
 
 ---
 
