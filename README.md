@@ -17,6 +17,16 @@ This version loads an 18-song catalog from `data/songs.csv`, scores every song a
 
 ## How The System Works
 
+### Real-World Context
+
+Real streaming platforms like Spotify and YouTube typically blend two different techniques. **Collaborative filtering** predicts what you'll like based on the behavior of *other* users with similar taste (their likes, skips, playlists, and listening history) - it needs a large base of other people's data and doesn't care what a song actually sounds like. **Content-based filtering** predicts what you'll like based on the attributes of the items themselves (genre, tempo, mood, valence, danceability) compared against your own stated or inferred preferences - it needs no other users at all, just metadata plus one profile.
+
+This simulation is a pure content-based recommender: there are no user accounts, listening history, or other listeners to learn from, so `score_song` compares only the attributes already present in `songs.csv` (genre, mood, energy, acousticness) against one user's explicitly stated preferences. It prioritizes being transparent and explainable (every score comes with itemized reasons) over the kind of large-scale, implicit pattern-matching real collaborative systems rely on.
+
+A recommender needs both a **Scoring Rule** and a **Ranking Rule** because they solve different problems. The Scoring Rule (`score_song`) judges one song in isolation; on its own, a single score can't tell you what to play next; it only says how well that one song fits. The Ranking Rule (the `sorted(...)` call inside `recommend_songs`) is what turns a pile of independent, unordered scores into an actual ordered list, which is the only way to decide which few songs out of the whole catalog should be surfaced first.
+
+### Data Model
+
 Each `Song` carries: `genre`, `mood`, `energy`, `tempo_bpm`, `valence`, `danceability`, and `acousticness`. A user's taste is captured as `user_prefs`: `genre`, `mood`, `energy`, and `likes_acoustic`.
 
 Recommending is a three-step pipeline: load the catalog, score every song against the user's prefs, then rank and keep the top K:
